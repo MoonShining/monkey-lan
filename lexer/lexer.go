@@ -1,6 +1,6 @@
 package lexer
 
-import "github.com/MoonShining/monkey/token"
+import "github.com/MoonShining/monkey-lan/token"
 
 type Lexer struct {
 	input        []rune

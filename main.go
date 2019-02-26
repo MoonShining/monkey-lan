@@ -14,5 +14,4 @@ func main() {
 	}
 	fmt.Printf("Hello %s! This is Monkey lan!\n", user.Username)
 	repl.Start(os.Stdin, os.Stdout)
-
 }
