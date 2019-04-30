@@ -3,15 +3,21 @@ package repl
 import (
 	"bufio"
 	"fmt"
+	"github.com/MoonShining/monkey-lan/evaluator"
 	"github.com/MoonShining/monkey-lan/lexer"
+	"github.com/MoonShining/monkey-lan/object"
 	"github.com/MoonShining/monkey-lan/parser"
 	"io"
 )
 
-const HEADER = ">> "
+const (
+	HEADER = ">> "
+	EXIT   = "exit"
+)
 
 func Start(in io.Reader, out io.Writer) {
 	scanner := bufio.NewScanner(in)
+	env := object.NewEnvironment()
 
 	for {
 		fmt.Printf(HEADER)
@@ -21,6 +27,10 @@ func Start(in io.Reader, out io.Writer) {
 		}
 
 		line := scanner.Text()
+		if line == EXIT {
+			break
+		}
+
 		l := lexer.New(line)
 		p := parser.New(l)
 
@@ -30,8 +40,12 @@ func Start(in io.Reader, out io.Writer) {
 			continue
 		}
 
-		io.WriteString(out, program.String())
-		io.WriteString(out, "\n")
+		evaluated := evaluator.Eval(program, env)
+		if evaluated != nil {
+			io.WriteString(out, evaluated.Inspect())
+			io.WriteString(out, "\n")
+		}
+
 	}
 }
 
