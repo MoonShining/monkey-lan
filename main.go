@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/MoonShining/monkey/repl"
+	"github.com/MoonShining/monkey-lan/repl"
 	"os"
 	user2 "os/user"
 )
