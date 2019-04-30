@@ -55,6 +55,17 @@ func (l *Lexer) peekChar() rune {
 	}
 }
 
+func (l *Lexer) readString() string {
+	position := l.position + 1
+	for {
+		l.readChar()
+		if l.ch == '"' {
+			break
+		}
+	}
+	return string(l.input[position:l.position])
+}
+
 func (l *Lexer) NextToken() token.Token {
 	var t token.Token
 	l.skipWhitespace()
@@ -85,6 +96,9 @@ func (l *Lexer) NextToken() token.Token {
 		} else {
 			t = newToken(token.ASSIGN, l.ch)
 		}
+	case '"':
+		t.Type = token.STRING
+		t.Literal = l.readString()
 	case ';':
 		t = newToken(token.SEMICOLON, l.ch)
 	case '(':
