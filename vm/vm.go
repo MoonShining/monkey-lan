@@ -9,6 +9,11 @@ import (
 
 const StackSize = 2048
 
+var (
+	True  = &object.Boolean{Value: true}
+	False = &object.Boolean{Value: false}
+)
+
 type VM struct {
 	constants    []object.Object
 	instructions code.Instructions
@@ -51,6 +56,16 @@ func (vm *VM) Run() error {
 			if err != nil {
 				return err
 			}
+		case code.OpTrue:
+			err := vm.push(True)
+			if err != nil {
+				return err
+			}
+		case code.OpFalse:
+			err := vm.push(False)
+			if err != nil {
+				return err
+			}
 		case code.OpPop:
 			vm.pop()
 		}
@@ -84,7 +99,7 @@ func (vm *VM) executBinaryIntegerOperation(op code.Opcode, left, right object.Ob
 	case code.OpDiv:
 		result = leftV / rightV
 	default:
-		return fmt.Errorf("unknow integer operator %s", op)
+		return fmt.Errorf("unknow integer operator %v", op)
 	}
 
 	return vm.push(&object.Integer{Value: result})
