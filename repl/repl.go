@@ -54,8 +54,8 @@ func Start(in io.Reader, out io.Writer) {
 			continue
 		}
 
-		stackTop := machine.StackTop()
-		io.WriteString(out, stackTop.Inspect())
+		lastPoped := machine.LastPopedStackElem()
+		io.WriteString(out, lastPoped.Inspect())
 		io.WriteString(out, "\n")
 
 		//evaluated := evaluator.Eval(program, env)
